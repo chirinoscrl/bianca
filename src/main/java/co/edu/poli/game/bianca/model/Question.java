@@ -71,4 +71,18 @@ public class Question {
     public Optional<Choice> getAnswerCorrect() {
         return choices.stream().filter(Choice::isCorrect).findFirst();
     }
+
+    public Choice findChoiceByCode(int code) {
+        for (Choice choice : this.getChoices()) {
+            if (choice.getCode() == code) {
+                return choice;
+            }
+        }
+        
+        return null;
+    }
+
+    public String getImage() {
+        return image;
+    }
 }

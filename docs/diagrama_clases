@@ -1,0 +1,95 @@
+@startuml
+
+!theme plain
+left to right direction
+skinparam linetype ortho
+
+class Answer {
+  + Answer(Question, Choice, boolean): 
+  - question: Question
+  - isCorrect: boolean
+  - choiceSelected: Choice
+   question: Question
+   choiceSelected: Choice
+   isCorrect: boolean
+}
+class Choice {
+  + Choice(int, String, boolean): 
+  - code: int
+  - isCorrect: boolean
+  - image: String
+   image: String
+   isCorrect: boolean
+   code: int
+}
+class Controller {
+  + Controller(): 
+  + closeWindows(): void
+   reference: Node
+   viewReturnPath: String
+}
+class FinalController {
+  + FinalController(): 
+  + initialize(int): void
+  + onBack(ActionEvent): void
+  + onExit(ActionEvent): void
+   reference: Node
+}
+class Game {
+  + Game(): 
+  - questions: List<Question>
+  - answers: List<Answer>
+  - score: int
+  + validateAnswer(Question, Choice): boolean
+  + nextQuestion(): Question
+   answers: List<Answer>
+   questions: List<Question>
+   score: int
+}
+class MainApplication {
+  + MainApplication(): 
+  + main(String[]): void
+  + start(Stage): void
+}
+class PlayController {
+  + PlayController(): 
+  + onSelectedChoice(ActionEvent): void
+  + initialize(URL, ResourceBundle): void
+  - openFinalView(): void
+  - play(): void
+   reference: Node
+}
+class Question {
+  + Question(String, String, List<Choice>): 
+  - statement: String
+  - image: String
+  - choices: List<Choice>
+  + findChoiceByCode(int): Choice
+   image: String
+   statement: String
+   choices: List<Choice>
+   answerCorrect: Optional<Choice>
+}
+class QuestionData {
+  + QuestionData(): 
+  + get(): List<Question>
+}
+class WelcomeController {
+  + WelcomeController(): 
+  + onOpenGameClick(ActionEvent): void
+}
+
+Answer            "1" *-[#595959,plain]-> "choiceSelected\n1" Choice            
+Answer            "1" *-[#595959,plain]-> "question\n1" Question          
+FinalController    -[#000082,plain]-^  Controller        
+Game              "1" *-[#595959,plain]-> "answers\n*" Answer            
+Game               -[#595959,dashed]->  Answer            : "«create»"
+Game              "1" *-[#595959,plain]-> "questions\n*" Question          
+PlayController     -[#000082,plain]-^  Controller        
+PlayController     -[#595959,dashed]->  Game              : "«create»"
+PlayController    "1" *-[#595959,plain]-> "game\n1" Game              
+PlayController    "1" *-[#595959,plain]-> "questionCurrent\n1" Question          
+Question          "1" *-[#595959,plain]-> "choices\n*" Choice            
+QuestionData       -[#595959,dashed]->  Choice            : "«create»"
+QuestionData       -[#595959,dashed]->  Question          : "«create»"
+@enduml

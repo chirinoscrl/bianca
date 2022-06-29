@@ -12,6 +12,8 @@ import java.util.List;
  */
 public class Game {
 
+    private static final int POINTS_EARNED = 50;
+
     // Listado de preguntas que componente una partida
     private final List<Question> questions;
 
@@ -20,6 +22,9 @@ public class Game {
 
     // Esta variable de control nos registra el índice de la pregunta en curso.
     private int questionIndexCurrent = 0;
+
+    // Esta variable acumulado llevara el puntaje acumulado por el usuario
+    private int score = 0;
 
     /**
      * Crea un nuevo juego
@@ -64,6 +69,7 @@ public class Game {
      */
     public boolean validateAnswer(Question question, Choice choiceSelected) {
         boolean isCorrect = question.getAnswerCorrect().orElseThrow().getCode() == choiceSelected.getCode();
+        this.score = isCorrect ? (this.score + POINTS_EARNED) : this.score;
         Answer answer = new Answer(question, choiceSelected, isCorrect);
         answers.add(answer);
 
@@ -77,5 +83,14 @@ public class Game {
      */
     public List<Answer> getAnswers() {
         return answers;
+    }
+
+    /**
+     * Permite obtener el score acumulado por el usuario
+     *
+     * @return score acumulado
+     */
+    public int getScore() {
+        return score;
     }
 }
